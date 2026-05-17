@@ -1,23 +1,34 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  RxString name = ''.obs;
+  RxString email = ''.obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getCurrentUser();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> getCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final userData = prefs.getString('user');
+
+    if (userData != null) {
+      final user = jsonDecode(userData);
+
+      name.value = user['name'] ?? '';
+      email.value = user['email'] ?? '';
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
 
-  void increment() => count.value++;
+    await prefs.clear();
+  }
 }

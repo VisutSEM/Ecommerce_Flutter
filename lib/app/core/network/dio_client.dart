@@ -5,7 +5,7 @@ import '../storage/token_storage.dart';
 class DioClient {
   static final Dio dio = Dio(
     BaseOptions(
-      baseUrl: AppConstants.baseUrl,
+      baseUrl: AppConstants.kBaseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
