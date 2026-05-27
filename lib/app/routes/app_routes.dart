@@ -9,6 +9,11 @@ abstract class Routes {
   static const LOGOUT = _Paths.LOGOUT;
   static const ONBOARDING = _Paths.ONBOARDING;
   static const SPLASH = _Paths.SPLASH;
+  static const PRODUCT = _Paths.PRODUCT;
+  static const PRODUCT_DETAIL = _Paths.PRODUCT_DETAIL;
+  static const MAIN_APP = _Paths.MAIN_APP;
+  static const PROFILE = _Paths.PROFILE;
+  static const CART = _Paths.CART;
 }
 
 abstract class _Paths {
@@ -19,4 +24,9 @@ abstract class _Paths {
   static const LOGOUT = '/logout';
   static const ONBOARDING = '/onboarding';
   static const SPLASH = '/splash';
+  static const PRODUCT = '/product';
+  static const PRODUCT_DETAIL = '/product-detail';
+  static const MAIN_APP = '/main-app';
+  static const PROFILE = '/profile';
+  static const CART = '/cart';
 }

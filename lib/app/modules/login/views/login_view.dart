@@ -170,7 +170,7 @@ class LoginView extends GetView<LoginController> {
                               colorText: Colors.white,
                             );
 
-                            Get.offAllNamed('/home');
+                            Get.offAllNamed('/main-app');
                           }
                         }
                       },

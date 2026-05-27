@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:e_commerce_flutter/app/core/features/auth/data/models/req/login_req.model.dart';
-import 'package:e_commerce_flutter/app/core/features/auth/data/models/req/register.model.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:e_commerce_flutter/app/core/constants/app_constants.dart';
 class ApiProvider extends GetxService {
@@ -16,6 +14,7 @@ class ApiProvider extends GetxService {
   void _initializeDio(){
       _dio = Dio(
         BaseOptions(
+          // baseUrl: "${AppConstants.kBaseUrl}/api/v1",
           baseUrl: "${AppConstants.kBaseUrl}/api",
           followRedirects: false,
           validateStatus: (status){
@@ -48,5 +47,9 @@ class ApiProvider extends GetxService {
 
   Future<Response> getUser() async {
     return await _dio.get("/users");
+  }
+
+  Future<Response> fetchProduct() async {
+    return await _dio.get("/products");
   }
 }

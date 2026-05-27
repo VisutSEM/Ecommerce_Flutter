@@ -13,7 +13,7 @@ void main()async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Application",
-      //initialRoute: token != null ? '/home' : '/onboarding',
+      //initialRoute: token != null ? '/main-app' : '/onboarding',
       initialRoute:  AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
