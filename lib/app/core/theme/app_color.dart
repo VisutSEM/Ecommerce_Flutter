@@ -50,4 +50,124 @@ class AppColors {
   static const Color accent = accent600;
   static const Color background = white;
   static const Color buttonColor = Color(0xFF4F8C87);
+
+  // ===============  Gradient ===========================================================
+
+  static  LinearGradient gradient = LinearGradient(
+    colors: [
+      Colors.blue.shade900,
+      Colors.red.shade900,
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  static  LinearGradient gradientV0 = LinearGradient(
+    colors: [
+      Colors.pink,
+      Colors.yellow.shade900,
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  // 1. Ocean Blue 💙
+  static const LinearGradient gradientV1 = LinearGradient(
+    colors: [
+      Color(0xFF00C6FF),
+      Color(0xFF0072FF),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 2. Purple Dream 💜
+  static const LinearGradient gradientV2 = LinearGradient(
+    colors: [
+      Color(0xFF8E2DE2),
+      Color(0xFF4A00E0),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 3. Sunset 🔥
+  static const LinearGradient gradientV3 = LinearGradient(
+    colors: [
+      Color(0xFFFF512F),
+      Color(0xFFF09819),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 4. Pink Magic 💗
+  static const LinearGradient gradientV4 = LinearGradient(
+    colors: [
+      Color(0xFFFF416C),
+      Color(0xFFFF4B2B),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 5. Instagram Style 🌈
+  static const LinearGradient gradientV5 = LinearGradient(
+    colors: [
+      Color(0xFFF58529),
+      Color(0xFFDD2A7B),
+      Color(0xFF8134AF),
+      Color(0xFF515BD4),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 6. Emerald 💚
+  static const LinearGradient gradientV6 = LinearGradient(
+    colors: [
+      Color(0xFF11998E),
+      Color(0xFF38EF7D),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 7. Midnight 🌙
+  static const LinearGradient gradientV7 = LinearGradient(
+    colors: [
+      Color(0xFF232526),
+      Color(0xFF414345),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 8. Royal Blue 💎
+  static const LinearGradient gradientV8 = LinearGradient(
+    colors: [
+      Color(0xFF396AF6),
+      Color(0xFF2948FF),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 9. Peach Glow 🍑
+  static const LinearGradient gradientV9 = LinearGradient(
+    colors: [
+      Color(0xFFFF9A9E),
+      Color(0xFFFAD0C4),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+// 10. Cyber Purple ⚡
+  static const LinearGradient gradientV10 = LinearGradient(
+    colors: [
+      Color(0xFFDA22FF),
+      Color(0xFF9733EE),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }

@@ -139,10 +139,9 @@ class _FloatingNavItem extends StatelessWidget {
     required this.currentIndex,
     required this.selectedIcon,
     required this.unselectedIcon,
-    this.svgAsset,
     required this.onTap,
     this.showBadge = false,
-  });
+  }) : svgAsset = null;
 
   final String label;
   final int index;
@@ -175,9 +174,13 @@ class _FloatingNavItem extends StatelessWidget {
               vertical: 6,
             ),
             decoration: BoxDecoration(
-              color: isSelected
-                  ? AppColors.waterBlue.withValues(alpha: 0.92)
-                  : AppColors.transparent,
+              gradient: isSelected ? LinearGradient(
+                colors: [
+                  AppColors.accent400,
+                  Colors.transparent,
+                ],
+              )
+                  : null,
               borderRadius: BorderRadius.circular(_selectedRadius),
               boxShadow: isSelected
                   ? [
@@ -216,7 +219,7 @@ class _FloatingNavItem extends StatelessWidget {
                         isSelected ? selectedIcon : unselectedIcon,
                         color: isSelected
                             ? AppColors.white
-                            : AppColors.textPrimary,
+                            : AppColors.white,
                         size: 22,
                       ),
                     ),
@@ -232,7 +235,7 @@ class _FloatingNavItem extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: isSelected
                             ? AppColors.white
-                            : AppColors.textPrimary,
+                            : AppColors.white,
                       ),
                     ),
                   ],

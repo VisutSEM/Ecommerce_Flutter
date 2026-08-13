@@ -2,8 +2,11 @@ import 'package:e_commerce_flutter/app/modules/home/views/home_view.dart';
 import 'package:e_commerce_flutter/app/modules/product/views/product_view.dart';
 import 'package:e_commerce_flutter/app/modules/profile/views/profile_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 
 import '../../cart/views/cart_view.dart';
+import '../../product/controllers/product_controller.dart';
 import '../widget/floating_navbar.dart';
 
 
@@ -16,6 +19,13 @@ class MainAppView extends StatefulWidget {
 
 class _MainScreenState extends State<MainAppView> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    Get.put(ProductController());
+    // TODO: implement initState
+    super.initState();
+  }
 
   final List<Widget> _screens = [
     HomeView(),
@@ -50,6 +60,7 @@ class _MainScreenState extends State<MainAppView> {
           ),
         ],
       ),
+      
     );
   }
 }

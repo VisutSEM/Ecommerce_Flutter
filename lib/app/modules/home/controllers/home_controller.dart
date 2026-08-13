@@ -152,9 +152,9 @@ import 'package:get/get.dart';
 // }
 
 
-import 'package:get/get.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/features/auth/data/providers/api_provider.dart';
 
 class HomeController extends GetxController {
 
@@ -194,64 +194,67 @@ class HomeController extends GetxController {
   ];
 
   /// ================= CATEGORIES =================
-  final List<Map<String, dynamic>> categories = [
-    {
-      "title": "All",
-      "icon": "🛍️",
-      "color": 0xFF6C63FF,
-    },
-    {
-      "title": "Phones",
-      "icon": "📱",
-      "color": 0xFF4CAF50,
-    },
-    {
-      "title": "Laptop",
-      "icon": "💻",
-      "color": 0xFFFF9800,
-    },
-    {
-      "title": "Watch",
-      "icon": "⌚",
-      "color": 0xFFE91E63,
-    },
-    {
-      "title": "Audio",
-      "icon": "🎧",
-      "color": 0xFF03A9F4,
-    },
-    {
-      "title": "Shoes",
-      "icon": "👟",
-      "color": 0xFFFF5722,
-    },
-    {
-      "title": "Furniture",
-      "icon": "🪑",
-      "color": 0xFF795548,
-    },
-    {
-      "title": "Gaming",
-      "icon": "🎮",
-      "color": 0xFF9C27B0,
-    },
-    {
-      "title": "Camera",
-      "icon": "📷",
-      "color": 0xFF009688,
-    },
-    {
-      "title": "Fashion",
-      "icon": "👕",
-      "color": 0xFFFF4081,
-    },
-  ];
+  // final List<Map<String, dynamic>> categories = [
+  //   {
+  //     "title": "All",
+  //     "icon": "🛍️",
+  //     "color": 0xFF6C63FF,
+  //   },
+  //   {
+  //     "title": "Phones",
+  //     "icon": "📱",
+  //     "color": 0xFF4CAF50,
+  //   },
+  //   {
+  //     "title": "Laptop",
+  //     "icon": "💻",
+  //     "color": 0xFFFF9800,
+  //   },
+  //   {
+  //     "title": "Watch",
+  //     "icon": "⌚",
+  //     "color": 0xFFE91E63,
+  //   },
+  //   {
+  //     "title": "Audio",
+  //     "icon": "🎧",
+  //     "color": 0xFF03A9F4,
+  //   },
+  //   {
+  //     "title": "Shoes",
+  //     "icon": "👟",
+  //     "color": 0xFFFF5722,
+  //   },
+  //   {
+  //     "title": "Furniture",
+  //     "icon": "🪑",
+  //     "color": 0xFF795548,
+  //   },
+  //   {
+  //     "title": "Gaming",
+  //     "icon": "🎮",
+  //     "color": 0xFF9C27B0,
+  //   },
+  //   {
+  //     "title": "Camera",
+  //     "icon": "📷",
+  //     "color": 0xFF009688,
+  //   },
+  //   {
+  //     "title": "Fashion",
+  //     "icon": "👕",
+  //     "color": 0xFFFF4081,
+  //   },
+  // ];
 
+  final ApiProvider _provider = Get.find<ApiProvider>();
+  RxBool isLoading = false.obs;
+  final categories = [].obs;
   /// ================= LOAD USER =================
   @override
   void onInit() {
     super.onInit();
-
+    getCategories();
     loadUser();
   }
 
@@ -273,4 +276,29 @@ class HomeController extends GetxController {
   void changeCategory(int index) {
     selectedCategory.value = index;
   }
-}
+
+  // ========== Category ==========
+
+  //final RxList categories = [].obs;
+  final RxBool isLoadingCategories = false.obs;
+
+// ========== Category ==========
+  Future<void> getCategories() async {
+    isLoading.value = true;
+
+    try {
+      final response = await _provider.getCate();
+
+      print(response.data); // Check API response
+
+      if (response.statusCode == 200) {
+        categories.assignAll(response.data['data'] ?? []);
+      }
+    } catch (e) {
+      debugPrint('Error loading categories: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:e_commerce_flutter/app/core/constants/app_constants.dart';
+import 'package:e_commerce_flutter/app/core/storage/token_storage.dart';
 class ApiProvider extends GetxService {
   late Dio _dio;
 
@@ -50,6 +51,27 @@ class ApiProvider extends GetxService {
   }
 
   Future<Response> fetchProduct() async {
-    return await _dio.get("/products");
+    return await _dio.get(
+      "/admin/products",
+      options: await _authorizedOptions(),
+    );
   }
+
+  Future<Response> getCate() async {
+    return await _dio.get(
+      '/admin/categories',
+      options: await _authorizedOptions(),
+    );
+  }
+
+  Future<Options> _authorizedOptions() async {
+    final token = await TokenStorage.getToken();
+
+    return Options(
+      headers: {
+        if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+      },
+    );
+  }
+
 }

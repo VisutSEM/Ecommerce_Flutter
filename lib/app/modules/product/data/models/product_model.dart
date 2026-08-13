@@ -1,92 +1,107 @@
+import 'package:e_commerce_flutter/app/core/constants/app_constants.dart';
+
+// class ProductModel {
+//   final int id;
+//   final int categoryId;
+//   final String name;
+//   final String slug;
+//   final String description;
+//   final String price;
+//   final bool featured_products;
+//   final String? image;
+//
+//   ProductModel({
+//     required this.id,
+//     required this.categoryId,
+//     required this.name,
+//     required this.slug,
+//     required this.description,
+//     required this.price,
+//     required this.featured_products,
+//     this.image,
+//   });
+//
+//   factory ProductModel.fromJson(Map<String, dynamic> json) {
+//     return ProductModel(
+//       id: json['id'],
+//       categoryId: json['category_id'],
+//       name: json['name'] ?? '',
+//       slug: json['slug'] ?? '',
+//       description: json['description'] ?? '',
+//       price: json['price'].toString(),
+//       featured_products: json['featured_products'],
+//       image: json['image'],
+//     );
+//   }
+//
+//   // Full image URL
+//   String get imageUrl {
+//     if (image == null || image!.isEmpty) return "";
+//     return "${AppConstants.storageUrl}/$image";
+//   }
+// }
+
 class ProductModel {
-  int? id;
-  String? title;
-  String? slug;
-  int? price;
-  String? description;
-  Category? category;
-  List<String>? images;
-  String? creationAt;
-  String? updatedAt;
+  final int id;
+  final int categoryId;
+  final String name;
+  final String slug;
+  final String description;
+  final double price;
+  final bool isFeatured;
+  final String image;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  ProductModel(
-      {this.id,
-        this.title,
-        this.slug,
-        this.price,
-        this.description,
-        this.category,
-        this.images,
-        this.creationAt,
-        this.updatedAt});
+  ProductModel({
+    required this.id,
+    required this.categoryId,
+    required this.name,
+    required this.slug,
+    required this.description,
+    required this.price,
+    required this.isFeatured,
+    required this.image,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    slug = json['slug'];
-    price = json['price'];
-    description = json['description'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
-    // images = json['images'].cast<String>();
-    images = json['images'] != null
-        ? List<String>.from(json['images'])
-        : [];
-    creationAt = json['creationAt'];
-    updatedAt = json['updatedAt'];
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      id: json['id'] ?? 0,
+      categoryId: json['category_id'] ?? 0,
+      name: json['name'] ?? '',
+      slug: json['slug'] ?? '',
+      description: json['description'] ?? '',
+      price: double.tryParse(json['price'].toString()) ?? 0.0,
+      isFeatured: json['is_featured'] == 1 || json['is_featured'] == true,
+      image: json['image'] ?? '',
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'])
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.tryParse(json['updated_at'])
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['slug'] = this.slug;
-    data['price'] = this.price;
-    data['description'] = this.description;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
-    }
-    data['images'] = this.images;
-    data['creationAt'] = this.creationAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
+    return {
+      'id': id,
+      'category_id': categoryId,
+      'name': name,
+      'slug': slug,
+      'description': description,
+      'price': price,
+      'is_featured': isFeatured ? 1 : 0,
+      'image': image,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+    };
   }
+
+  /// Full image URL
+  String get imageUrl =>
+      "${AppConstants.storageUrl}/$image";
 }
 
-class Category {
-  int? id;
-  String? name;
-  String? slug;
-  String? image;
-  String? creationAt;
-  String? updatedAt;
-
-  Category(
-      {this.id,
-        this.name,
-        this.slug,
-        this.image,
-        this.creationAt,
-        this.updatedAt});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    slug = json['slug'];
-    image = json['image'];
-    creationAt = json['creationAt'];
-    updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['image'] = this.image;
-    data['creationAt'] = this.creationAt;
-    data['updatedAt'] = this.updatedAt;
-    return data;
-  }
-}
