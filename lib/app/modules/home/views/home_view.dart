@@ -276,6 +276,7 @@
 
 //===================
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:e_commerce_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -283,10 +284,10 @@ import '../../../core/theme/app_color.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  HomeView({super.key});
+  const HomeView({super.key});
 
-  @override
-  final HomeController controller = Get.put(HomeController());
+  // @override
+  // final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -345,20 +346,20 @@ class HomeView extends GetView<HomeController> {
                               CrossAxisAlignment.start,
 
                               children: [
-                                const Text(
-                                  "Good, Morning",
-                                  style: TextStyle(
+                                Text(
+                                  controller.getGreeting(),
+                                  style: const TextStyle(
                                     color: Colors.grey,
                                     fontSize: 14,
                                   ),
                                 ),
-
                                 const SizedBox(height: 4),
 
                                 Text(
                                   controller.userName.value,
 
                                   style: const TextStyle(
+                                    color: AppColors.white,
                                     fontSize: 22,
                                     fontWeight:
                                     FontWeight.bold,
@@ -575,126 +576,102 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(height: 30),
 
                     /// ================= CATEGORIES =================
-                    const Text(
-                      "Categories",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                    /// Categories
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: SizedBox(
+                          height: 50,
+                          child: Obx(
+                                  () {
+                                final isSelected = controller.selectedCategory.value == 0;
+                                if(controller.isLoading.value){
+                                  return Center(child: CircularProgressIndicator(color: Colors.transparent,));
+                                }
+                                return Obx(() {
+                                  return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: controller.categories.length,
+                                    itemBuilder: (context, index) {
+                                      final category = controller.categories[index];
+
+                                      final categoryId = int.parse(
+                                        category['id'].toString(),
+                                      );
+
+                                      final selected =
+                                          controller.selectedCategory.value == categoryId;
+
+                                      return GestureDetector(
+                                        onTap: () {
+                                          controller.selectCategory(categoryId);
+                                        },
+                                        child: AnimatedContainer(
+                                          duration: const Duration(milliseconds: 250),
+                                          margin: const EdgeInsets.only(right: 10),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 18,
+                                            vertical: 10,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            // SELECTED
+                                            gradient: selected
+                                                ? LinearGradient(
+                                              colors: [
+                                                Colors.blue.shade900,
+                                                Colors.red.shade600,
+                                              ],
+                                            )
+                                            // UNSELECTED
+                                                : null,
+
+                                            color: selected
+                                                ? null
+                                                : Colors.white.withValues(alpha: 0.10),
+
+                                            borderRadius: BorderRadius.circular(30),
+
+                                            border: Border.all(
+                                              color: selected
+                                                  ? Colors.transparent
+                                                  : Colors.grey,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              if (selected) ...[
+                                                const Icon(
+                                                  Icons.check_rounded,
+                                                  size: 16,
+                                                  color: Colors.white,
+                                                ),
+                                                const SizedBox(width: 6),
+                                              ],
+
+                                              Text(
+                                                category['name'] ?? '',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: selected
+                                                      ? FontWeight.w700
+                                                      : FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                });
+                              }
+                          )
                       ),
                     ),
-
                     const SizedBox(height: 18),
-
-                    // GridView.builder(
-                    //   shrinkWrap: true,
-                    //
-                    //   physics:
-                    //   const NeverScrollableScrollPhysics(),
-                    //
-                    //   itemCount:
-                    //   controller.categories.length,
-                    //
-                    //   gridDelegate:
-                    //   const SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: 3,
-                    //     crossAxisSpacing: 14,
-                    //     mainAxisSpacing: 14,
-                    //     childAspectRatio: 1,
-                    //   ),
-                    //
-                    //   itemBuilder: (context, index) {
-                    //     final category =
-                    //     controller.categories[index];
-                    //
-                    //     return Container(
-                    //       decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         borderRadius:
-                    //         BorderRadius.circular(
-                    //             24),
-                    //
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             color: Colors.black
-                    //                 .withOpacity(0.04),
-                    //
-                    //             blurRadius: 8,
-                    //           ),
-                    //         ],
-                    //       ),
-                    //
-                    //       child: Column(
-                    //         mainAxisAlignment:
-                    //         MainAxisAlignment.center,
-                    //
-                    //         children: [
-                    //           Text(
-                    //             category['icon'],
-                    //             style:
-                    //             const TextStyle(
-                    //               fontSize: 36,
-                    //             ),
-                    //           ),
-                    //
-                    //           const SizedBox(height: 10),
-                    //
-                    //           Text(
-                    //             category['title'],
-                    //
-                    //             style:
-                    //             const TextStyle(
-                    //               fontWeight:
-                    //               FontWeight.w600,
-                    //               fontSize: 15,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     );
-                    //   },
-                    // ),
-                    Obx(
-                          () {
-                        if (controller.categories.isEmpty) {
-                          return const Center(
-                            child: Text('connecting from the server.....'),
-                          );
-                        }
-
-                        return SizedBox(
-                          height: 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.categories.length,
-                            itemBuilder: (context, index) {
-                              final category = controller.categories[index];
-
-                              return Container(
-                                margin: const EdgeInsets.only(right: 12),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    category['name'], // Change to category.name if using a model
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-
                     SizedBox(height: 30),
 
                     /// ================= SPECIAL CARD =================

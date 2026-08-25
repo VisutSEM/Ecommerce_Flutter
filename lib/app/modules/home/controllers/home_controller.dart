@@ -155,6 +155,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/features/auth/data/providers/api_provider.dart';
+import '../../product/data/models/product_model.dart';
 
 class HomeController extends GetxController {
 
@@ -250,12 +251,57 @@ class HomeController extends GetxController {
   final ApiProvider _provider = Get.find<ApiProvider>();
   RxBool isLoading = false.obs;
   final categories = [].obs;
+  final products = <ProductModel>[].obs;
+  final RxList<ProductModel> filteredProducts = <ProductModel>[].obs;
   /// ================= LOAD USER =================
   @override
   void onInit() {
     super.onInit();
     getCategories();
     loadUser();
+  }
+
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour < 12) {
+      return "Good Morning 🌅";
+    } else if (hour < 17) {
+      return "Good Afternoon ☀️";
+    } else if (hour < 21) {
+      return "Good Evening 🌇";
+    } else {
+      return "Good Night 🌙";
+    }
+  }
+
+  void selectCategory(int id) async{
+
+    // Update UI immediately
+    selectedCategory.value = id;
+
+    final allCate = 0.obs;
+    if (id == 0) {
+      // Show all products
+      filteredProducts.assignAll(products);
+      return;
+    }
+
+    // Show products from selected category
+    filteredProducts.assignAll(
+      products.where((product) => product.categoryId == id),
+    );
+    // Then load/filter products
+    //  await getProductsByCategory(id);
+
+    if (id == 0) {
+      filteredProducts.assignAll(products);
+      return;
+    }
+
+    filteredProducts.assignAll(
+      products.where((e) => e.categoryId == id),
+    );
   }
 
   Future<void> loadUser() async {
@@ -301,4 +347,20 @@ class HomeController extends GetxController {
     }
   }
 
+  void applyCategoryFilter() {
+    final categoryId = selectedCategory.value;
+
+    if (categoryId == 0) {
+      filteredProducts.assignAll(products);
+      return;
+    }
+
+    filteredProducts.assignAll(
+      products.where(
+            (product) => product.categoryId == categoryId,
+      ),
+    );
   }
+}
+
+

@@ -95,23 +95,20 @@ class ProductDetailView extends GetView<ProductDetailController> {
                   debugPrint("Image URL: ${product.image}");
                   debugPrint("Error: $error");
 
-                  return const Center(
-                    child: Icon(
-                      Icons.broken_image,
-                      size: 110,
-                      color: Colors.grey,
-                    ),
+                  return  Icon(
+                    Icons.broken_image,
+                    size: 110,
+                    color: Colors.grey,
                   );
                                 },
                               ),
                 )
-                : const Center(
-              child: Icon(
+                :  Center(
+              child:  Icon(
                 Icons.image,
                 size: 110,
                 color: Colors.grey,
-              ),
-            ),
+              ),),
           )
               ),
               Padding(

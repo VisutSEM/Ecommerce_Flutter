@@ -306,211 +306,147 @@ class ProductView extends GetView<ProductController> {
                 const SizedBox(height: 24),
 
                 /// Categories
-                Obx(
-                        () {
-                      if(controller.isLoading.value){
-                        return  Center(child: CircularProgressIndicator(color: Colors.transparent,));
-                      }
-                      else{
-                        null;
-                      }
-                      return  Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: Text(
-                            "Popular Products",
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                      );
-                    }
-                ),
+                Obx(() {
+                  if (controller.products.isEmpty) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.transparent,),
+                    );
+                  }
+
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "Categories",
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }),
 
                 const SizedBox(height: 12),
 
-                SizedBox(
-                  height: 50,
-                  child: Obx(
-                        () {
-                          final isSelected = controller.selectedCategory.value == 0;
-                          if(controller.isLoading.value){
-                            return Center(child: CircularProgressIndicator(color: Colors.transparent,));
-                          }
-                          return Row(
-                            children: [
-                              AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                curve: Curves.easeInOut,
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                  vertical: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: isSelected
-                                      ? LinearGradient(
-                                    colors: [
-                                      Colors.blue.shade900,
-                                      Colors.red.shade600,
-                                    ],
-                                  )
-                                      : null,
-                                  color: isSelected
-                                      ? null
-                                      : Colors.white.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? Colors.transparent
-                                        : Colors.grey,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: isSelected
-                                          ? Colors.black.withValues(alpha: 0.25)
-                                          : Colors.black.withValues(alpha: 0.05),
-                                      blurRadius: isSelected ? 12 : 6,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (isSelected) ...[
-                                      const Icon(
-                                        Icons.check_rounded,
-                                        size: 16,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(width: 6),
-                                    ],
-                                    Text(
-                                      'All',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: isSelected
-                                            ? FontWeight.w700
-                                            : FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              ListView.builder(
-                                physics: AlwaysScrollableScrollPhysics(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: SizedBox(
+                    height: 50,
+                    child: Obx(
+                          () {
+                            final isSelected = controller.selectedCategory.value == 0;
+                            if(controller.isLoading.value){
+                              return Center(child: CircularProgressIndicator(color: Colors.transparent,));
+                            }
+                            return Obx(() {
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: const BouncingScrollPhysics(),
                                 itemCount: controller.categories.length,
                                 itemBuilder: (context, index) {
                                   final category = controller.categories[index];
 
-                                  // Make sure both IDs are int
                                   final categoryId = int.parse(
                                     category['id'].toString(),
                                   );
 
-                                  return Obx((){
-                                    final selected =
-                                        controller.selectedCategory.value == categoryId;
-                                    return GestureDetector(
-                                      onTap: () {
-                                        controller.selectCategory(categoryId);
-                                      },
-                                      child: AnimatedContainer(
-                                        duration: const Duration(milliseconds: 200),
-                                        curve: Curves.easeInOut,
-                                        margin: const EdgeInsets.only(right: 10),
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 18,
-                                          vertical: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          gradient: selected
-                                              ? LinearGradient(
-                                            colors: [
-                                              Colors.blue.shade900,
-                                              Colors.red.shade600,
-                                            ],
-                                          )
-                                              : null,
+                                  final selected =
+                                      controller.selectedCategory.value == categoryId;
+
+                                  return GestureDetector(
+                                    onTap: () {
+                                      controller.selectCategory(categoryId);
+                                    },
+                                    child: AnimatedContainer(
+                                      duration: const Duration(milliseconds: 250),
+                                      margin: const EdgeInsets.only(right: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 18,
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        // SELECTED
+                                        gradient: selected
+                                            ? LinearGradient(
+                                          colors: [
+                                            Colors.blue.shade900,
+                                            Colors.red.shade600,
+                                          ],
+                                        )
+                                        // UNSELECTED
+                                            : null,
+
+                                        color: selected
+                                            ? null
+                                            : Colors.white.withValues(alpha: 0.10),
+
+                                        borderRadius: BorderRadius.circular(30),
+
+                                        border: Border.all(
                                           color: selected
-                                              ? null
-                                              : Colors.white.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(30),
-                                          border: Border.all(
-                                            color: selected
-                                                ? Colors.transparent
-                                                : Colors.grey,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: selected
-                                                  ? Colors.black.withValues(alpha: 0.25)
-                                                  : Colors.black.withValues(alpha: 0.05),
-                                              blurRadius: selected ? 12 : 6,
-                                              offset: const Offset(0, 4),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            if (selected) ...[
-                                              const Icon(
-                                                Icons.check_rounded,
-                                                size: 16,
-                                                color: Colors.white,
-                                              ),
-                                              const SizedBox(width: 6),
-                                            ],
-                                            Text(
-                                              category['name'] ?? '',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: selected
-                                                    ? FontWeight.w700
-                                                    : FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
+                                              ? Colors.transparent
+                                              : Colors.grey,
                                         ),
                                       ),
-                                    );
-                                  });
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (selected) ...[
+                                            const Icon(
+                                              Icons.check_rounded,
+                                              size: 16,
+                                              color: Colors.white,
+                                            ),
+                                            const SizedBox(width: 6),
+                                          ],
+
+                                          Text(
+                                            category['name'] ?? '',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: selected
+                                                  ? FontWeight.w700
+                                                  : FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
                                 },
-                              ),
-                            ],
-                          );
-                        }
-                  )
+                              );
+                            });
+                          }
+                    )
+                  ),
                 ),
 
                 const SizedBox(height: 25),
 
-                Obx(
-                   () {
-                     if(controller.isLoading.value){
-                       return  Center(child: CircularProgressIndicator(color: Colors.transparent,));
-                     }
-                     else{
-                       null;
-                     }
-                    return  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        "Popular Products",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
+                Obx(() {
+                  if (controller.products.isEmpty) {
+                    return  SizedBox.shrink(
+                      child: CircularProgressIndicator(color: Colors.transparent,),
                     );
                   }
-                ),
+
+                  return const Padding(
+                    padding: EdgeInsets.fromLTRB(16, 8, 16, 12),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Popular Products',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
 
                 const SizedBox(height: 16),
 
@@ -537,8 +473,11 @@ class ProductView extends GetView<ProductController> {
                     );
                   }
                   if (controller.isSearching.value) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Colors.white,),
+                    return  Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircularProgressIndicator(color: Colors.white,),
+                      ),
                     );
                   }
 

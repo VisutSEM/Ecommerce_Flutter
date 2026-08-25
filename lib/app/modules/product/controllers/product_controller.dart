@@ -103,7 +103,7 @@ class ProductController extends GetxController {
       products.where((product) => product.categoryId == id),
     );
     // Then load/filter products
-  //  await getProductsByCategory(id);
+    //  await getProductsByCategory(id);
 
     if (id == 0) {
       filteredProducts.assignAll(products);
@@ -114,6 +114,7 @@ class ProductController extends GetxController {
       products.where((e) => e.categoryId == id),
     );
   }
+
 
   Future<void> refreshProfile() async {
     await loadProfile();
