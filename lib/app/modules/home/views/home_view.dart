@@ -675,83 +675,83 @@ class HomeView extends GetView<HomeController> {
                     SizedBox(height: 30),
 
                     /// ================= SPECIAL CARD =================
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(22),
-
-                      decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.circular(26),
-
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFFF9966),
-                            Color(0xFFFF5E62),
-                          ],
-                        ),
-                      ),
-
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
-
-                              children: [
-                                const Text(
-                                  "Special Offer 🔥",
-
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight:
-                                    FontWeight.bold,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                const Text(
-                                  "Get discount for your first order.",
-
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 18),
-
-                                ElevatedButton(
-                                  onPressed: () {},
-
-                                  style:
-                                  ElevatedButton
-                                      .styleFrom(
-                                    backgroundColor:
-                                    Colors.white,
-
-                                    foregroundColor:
-                                    Colors.deepOrange,
-                                  ),
-
-                                  child:
-                                  const Text("Buy Now"),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const Icon(
-                            Icons.local_offer,
-                            color: Colors.white,
-                            size: 80,
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   padding: const EdgeInsets.all(22),
+                    //
+                    //   decoration: BoxDecoration(
+                    //     borderRadius:
+                    //     BorderRadius.circular(26),
+                    //
+                    //     gradient: const LinearGradient(
+                    //       colors: [
+                    //         Color(0xFFFF9966),
+                    //         Color(0xFFFF5E62),
+                    //       ],
+                    //     ),
+                    //   ),
+                    //
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Column(
+                    //           crossAxisAlignment:
+                    //           CrossAxisAlignment
+                    //               .start,
+                    //
+                    //           children: [
+                    //             const Text(
+                    //               "Special Offer 🔥",
+                    //
+                    //               style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontSize: 24,
+                    //                 fontWeight:
+                    //                 FontWeight.bold,
+                    //               ),
+                    //             ),
+                    //
+                    //             const SizedBox(height: 10),
+                    //
+                    //             const Text(
+                    //               "Get discount for your first order.",
+                    //
+                    //               style: TextStyle(
+                    //                 color: Colors.white,
+                    //                 fontSize: 15,
+                    //               ),
+                    //             ),
+                    //
+                    //             const SizedBox(height: 18),
+                    //
+                    //             ElevatedButton(
+                    //               onPressed: () {},
+                    //
+                    //               style:
+                    //               ElevatedButton
+                    //                   .styleFrom(
+                    //                 backgroundColor:
+                    //                 Colors.white,
+                    //
+                    //                 foregroundColor:
+                    //                 Colors.deepOrange,
+                    //               ),
+                    //
+                    //               child:
+                    //               const Text("Buy Now"),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //
+                    //       const Icon(
+                    //         Icons.local_offer,
+                    //         color: Colors.white,
+                    //         size: 80,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 100),
                   ],
