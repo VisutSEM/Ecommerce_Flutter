@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_color.dart';
 import '../../../routes/app_pages.dart';
-import '../../product/data/models/product_model.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends GetView<CartController> {
@@ -14,21 +13,18 @@ class CartView extends GetView<CartController> {
   @override
   final CartController controller = Get.put(CartController());
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: AppColors.gradient,
-      ),
+      decoration: BoxDecoration(gradient: AppColors.gradient),
       child: Scaffold(
-        backgroundColor:Colors.transparent,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: false,
           title: const Text(
-            'កន្ត្រករបស់ខ្ញិំ',
+            'កន្ត្រករបស់ខ្ញុំ',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           iconTheme: const IconThemeData(color: Colors.black),
@@ -41,14 +37,18 @@ class CartView extends GetView<CartController> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.red.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: IconButton(
                     tooltip: 'Clear cart',
                     onPressed: controller.clearCart,
-                    icon: const Icon(Icons.delete_outline_rounded,color: Colors.red,),
+                    icon: const Icon(
+                      Icons.delete_outline_rounded,
+                      color: Colors.red,
+                    ),
                   ),
                 ),
               );
@@ -208,9 +208,7 @@ class _SummaryHeader extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Colors.blue,Colors.red],
-        ),
+        gradient: const LinearGradient(colors: [Colors.blue, Colors.red]),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -305,7 +303,7 @@ class _CartItemCard extends StatelessWidget {
                 width: 92,
                 height: 92,
                 color: const Color(0xffF5F7FA),
-                child: _CartImage(product:product),
+                child: _CartImage(product: product),
               ),
             ),
             const SizedBox(width: 14),
@@ -391,7 +389,7 @@ class _CartItemCard extends StatelessWidget {
 }
 
 class _CartImage extends StatelessWidget {
-  const _CartImage({super.key, required this.product});
+  const _CartImage({required this.product});
 
   final Map<String, dynamic> product;
 
@@ -409,12 +407,12 @@ class _CartImage extends StatelessWidget {
     }
 
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: product['image'] ?? '',
       fit: BoxFit.cover,
-      placeholder: (_, __) =>
-      const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-      errorWidget: (_, __, ___) =>
-      const Icon(Icons.image_not_supported_outlined, color: Colors.grey),
+      placeholder: (_, _) =>
+          const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      errorWidget: (_, _, _) =>
+          const Icon(Icons.image_not_supported_outlined, color: Colors.grey),
     );
   }
 }

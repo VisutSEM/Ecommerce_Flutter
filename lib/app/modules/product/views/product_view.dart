@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_flutter/app/core/theme/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 
 import '../../cart/controllers/cart_controller.dart';
@@ -9,7 +10,7 @@ import '../../../routes/app_pages.dart';
 import '../widgets/product_card.dart';
 
 class ProductView extends GetView<ProductController> {
- const ProductView({super.key});
+  const ProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,8 @@ class ProductView extends GetView<ProductController> {
         gradient: AppColors.gradient,
       ),
       child: Scaffold(
-       // backgroundColor: const Color(0xffF6F7FB),
-       backgroundColor: Colors.transparent,
+        // backgroundColor: const Color(0xffF6F7FB),
+        backgroundColor: Colors.transparent,
 
         // appBar: AppBar(
         //   backgroundColor: Colors.transparent,
@@ -128,18 +129,18 @@ class ProductView extends GetView<ProductController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(30),
-                        child: Container(
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(60)
+                        padding: const EdgeInsets.all(8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(30),
+                          child: Container(
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(60)
+                            ),
+                            child: Image.asset('assets/images/psg_logo.jpg'),
                           ),
-                          child: Image.asset('assets/images/psg_logo.jpg'),
-                        ),
-                      )
+                        )
                     ),
                     Row(
                       children: [
@@ -331,9 +332,9 @@ class ProductView extends GetView<ProductController> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: SizedBox(
-                    height: 50,
-                    child: Obx(
-                          () {
+                      height: 50,
+                      child: Obx(
+                              () {
                             final isSelected = controller.selectedCategory.value == 0;
                             if(controller.isLoading.value){
                               return Center(child: CircularProgressIndicator(color: Colors.transparent,));
@@ -418,7 +419,7 @@ class ProductView extends GetView<ProductController> {
                               );
                             });
                           }
-                    )
+                      )
                   ),
                 ),
 
@@ -481,23 +482,20 @@ class ProductView extends GetView<ProductController> {
                     );
                   }
 
-                  return GridView.builder(
+                  return MasonryGridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(16),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
                     itemCount: controller.filteredProducts.length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: .65,
-                    ),
                     itemBuilder: (context, index) {
-                      final product =
-                      controller.filteredProducts[index];
+                      final product = controller.filteredProducts[index];
 
-                      return ProductCard(product: product);
+                      return ProductCard(
+                        product: product,
+                      );
                     },
                   );
                 }),

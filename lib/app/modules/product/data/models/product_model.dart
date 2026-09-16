@@ -1,4 +1,3 @@
-import 'package:e_commerce_flutter/app/core/constants/app_constants.dart';
 
 // class ProductModel {
 //   final int id;
@@ -101,7 +100,7 @@ class ProductModel {
   }
 
   /// Full image URL
-  String get imageUrl =>
-      "${AppConstants.storageUrl}/$image";
+  // String get imageUrl =>
+  //     "${AppConstants.storageUrl}/$image";
 }
 

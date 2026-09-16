@@ -7,7 +7,7 @@ import 'app/routes/app_pages.dart';
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   DependencyInjection().init();
-  //final token = await TokenStorage.getToken();
+  final token = await TokenStorage.getToken();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,

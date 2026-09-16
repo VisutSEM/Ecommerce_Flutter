@@ -33,7 +33,7 @@ class ProductDetailController extends GetxController {
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.contain,
-                    errorBuilder: (_, __, ___) {
+                    errorBuilder: (_, _, _) {
                       return const Icon(
                         Icons.broken_image_outlined,
                         color: Colors.white,

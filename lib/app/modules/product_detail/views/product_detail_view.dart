@@ -79,14 +79,14 @@ class ProductDetailView extends GetView<ProductDetailController> {
                     child: Stack(
                       children: [
                         InteractiveViewer( minScale: 1.0,
-                      maxScale: 5.0 ,child: CachedNetworkImage(imageUrl: product.imageUrl,fit: BoxFit.cover,))
+                      maxScale: 5.0 ,child: CachedNetworkImage(imageUrl: product.image,fit: BoxFit.cover,))
                       ],
                     ),
                   )
                 );
               },
                   child: CachedNetworkImage(
-                                imageUrl: product.imageUrl,
+                                imageUrl: product.image,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(),
@@ -215,7 +215,7 @@ class ProductDetailView extends GetView<ProductDetailController> {
 
                                 cartController.addToCart({
                                   'title': product.name,
-                                  'image': product.image ?? '',
+                                  'image': product.image,
                                   'price': price,
                                   'qty': 1,
                                   'id': product.id,

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:cached_network_image_ce/cached_network_image.dart';
+import 'package:e_commerce_flutter/app/modules/profile/data/user.model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +12,7 @@ class ProfileView extends GetView<ProfileController> {
 
   @override
   final ProfileController controller = Get.put(ProfileController());
+  UserModel? user;
 
   static const Color primary = Color(0xff6C63FF);
   static const Color secondary = Color(0xff8E7CFF);
@@ -25,9 +26,7 @@ class ProfileView extends GetView<ProfileController> {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
-      decoration: BoxDecoration(
-        gradient: AppColors.gradient,
-      ),
+      decoration: BoxDecoration(gradient: AppColors.gradient),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -43,7 +42,6 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   const _Header(),
 
                   const SizedBox(height: 24),
@@ -52,7 +50,7 @@ class ProfileView extends GetView<ProfileController> {
 
                   const SizedBox(height: 24),
 
-                  const _SectionTitle(title: "Account",),
+                  const _SectionTitle(title: "Account"),
 
                   const SizedBox(height: 12),
 
@@ -93,19 +91,26 @@ class ProfileView extends GetView<ProfileController> {
 
                   const SizedBox(height: 30),
 
-                  const _SectionTitle(title: "Setting",),
+                  const _SectionTitle(title: "Setting"),
 
                   const SizedBox(height: 12),
-                  
-                  _MenuContainer(children: [
-                    _MenuTile(icon: Icons.dark_mode_outlined, title: 'Dark/Light mode ', color: Colors.yellow, onTap: (){})
-                  ]),
+
+                  _MenuContainer(
+                    children: [
+                      _MenuTile(
+                        icon: Icons.dark_mode_outlined,
+                        title: 'Dark/Light mode ',
+                        color: Colors.yellow,
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
 
                   const SizedBox(height: 30),
 
-                  SwipeLogoutButton(
-                    onLogout: controller.logout,
-                  ),
+                  SwipeLogoutButton(onLogout: controller.logout),
+
+                  const SizedBox(height: 60),
                 ],
               ),
             ),
@@ -123,7 +128,6 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-
         const Expanded(
           child: Text(
             "Profile",
@@ -155,33 +159,27 @@ class _ProfileCard extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-          () => ClipRRect(
+    return Obx(() {
+      final user = controller.user.value;
+      // print('USER: $user');
+      // print('PROFILE PICTURE: ${user?.profilePicture}');
+      return ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 20,
-            sigmaY: 20,
-          ),
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              // Glass
-              color: Colors.white.withValues(alpha: 0.05),
-
+              color: Colors.white.withValues(alpha: 0.06),
               borderRadius: BorderRadius.circular(24),
-
-              // Glass border
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.28),
+                color: Colors.white.withValues(alpha: 0.25),
                 width: 1,
               ),
-
-              // Soft glass shadow
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.12),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 30,
                   offset: const Offset(0, 12),
                 ),
@@ -189,19 +187,57 @@ class _ProfileCard extends GetView<ProfileController> {
             ),
             child: Row(
               children: [
-                // Avatar
-                Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.25),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.5),
-                      width: 1,
-                    ),
-                  ),
-                  child: _Avatar(
-                    url: controller.avatarUrl.value,
+                GestureDetector(
+                  onTap: controller.pickAndUploadProfilePicture,
+                  child: Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withValues(alpha: 0.15),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.45),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 15,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: _Avatar(url: user?.profilePicture ?? ''),
+                      ),
+
+                      // Camera button
+                      Obx(
+                        () => Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withValues(alpha: 0.9),
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: controller.isUploadingPicture.value
+                              ? const Padding(
+                                  padding: EdgeInsets.all(7),
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.black87,
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.camera_alt_rounded,
+                                  size: 16,
+                                  color: Colors.black87,
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -215,7 +251,9 @@ class _ProfileCard extends GetView<ProfileController> {
                         children: [
                           Flexible(
                             child: Text(
-                              controller.userName.value,
+                              user?.name.isNotEmpty == true
+                                  ? user!.name
+                                  : 'Guest User',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -239,7 +277,9 @@ class _ProfileCard extends GetView<ProfileController> {
                       const SizedBox(height: 5),
 
                       Text(
-                        controller.email.value,
+                        user?.email.isNotEmpty == true
+                            ? user!.email
+                            : 'No email',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -250,14 +290,13 @@ class _ProfileCard extends GetView<ProfileController> {
 
                       const SizedBox(height: 14),
 
-                      // Glass Premium badge
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 13,
                           vertical: 7,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.16),
+                          color: Colors.white.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
                             color: Colors.white.withValues(alpha: 0.25),
@@ -271,10 +310,14 @@ class _ProfileCard extends GetView<ProfileController> {
                               color: Colors.white,
                               size: 16,
                             ),
+
                             const SizedBox(width: 6),
-                            const Text(
-                              'Premium Member',
-                              style: TextStyle(
+
+                            Text(
+                              controller.role.value.isNotEmpty
+                                  ? controller.role.value
+                                  : 'Member',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w600,
@@ -290,48 +333,74 @@ class _ProfileCard extends GetView<ProfileController> {
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class _Avatar extends StatelessWidget {
   final String url;
 
-  const _Avatar({
-    required this.url,
-  });
+  const _Avatar({required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    // print('AVATAR URL: "$url"');
+
+    return ClipOval(
+      child: SizedBox(
+        width: 76,
+        height: 76,
+        child: url.trim().isNotEmpty
+            ? Image.network(
+                url.trim(),
+                width: 76,
+                height: 76,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+
+                  return const _AvatarPlaceholder(loading: true);
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  print('AVATAR IMAGE ERROR: $error');
+                  print('AVATAR IMAGE URL: $url');
+
+                  return const _AvatarPlaceholder();
+                },
+              )
+            : const _AvatarPlaceholder(),
+      ),
+    );
+  }
+}
+
+class _AvatarPlaceholder extends StatelessWidget {
+  final bool loading;
+
+  const _AvatarPlaceholder({this.loading = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.white,
-          width: 2,
-        ),
-      ),
-      child: ClipOval(
-        child: SizedBox(
-          width: 78,
-          height: 78,
-          child: url.isEmpty
-              ? Container(
-            color: Colors.white,
-            child: const Icon(
-              Icons.person,
-              size: 42,
-              color: ProfileView.primary,
-            ),
-          )
-              : CachedNetworkImage(
-            imageUrl: url,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
+      width: 76,
+      height: 76,
+      color: Colors.white.withValues(alpha: 0.08),
+      child: loading
+          ? const Center(
+              child: SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              ),
+            )
+          : const Icon(Icons.person_rounded, color: Colors.white, size: 38),
     );
   }
 }
@@ -339,9 +408,7 @@ class _Avatar extends StatelessWidget {
 class _SectionTitle extends StatelessWidget {
   final String title;
 
-  const _SectionTitle({
-    required this.title,
-  });
+  const _SectionTitle({required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -359,19 +426,14 @@ class _SectionTitle extends StatelessWidget {
 class _MenuContainer extends StatelessWidget {
   final List<Widget> children;
 
-  const _MenuContainer({
-    required this.children,
-  });
+  const _MenuContainer({required this.children});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: 8,
-          sigmaY: 8,
-        ),
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
         child: Container(
           decoration: BoxDecoration(
             color: ProfileView.card.withValues(alpha: 0.05),
@@ -391,7 +453,7 @@ class _MenuContainer extends StatelessWidget {
           child: Column(
             children: List.generate(
               children.length,
-                  (index) => Column(
+              (index) => Column(
                 children: [
                   children[index],
 
@@ -444,10 +506,7 @@ class _MenuTile extends StatelessWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Icon(
-              icon,
-              color: color,
-            ),
+            child: Icon(icon, color: color),
           ),
           title: Text(
             title,
@@ -470,10 +529,7 @@ class _MenuTile extends StatelessWidget {
 class SwipeLogoutButton extends StatefulWidget {
   final Future<void> Function() onLogout;
 
-  const SwipeLogoutButton({
-    super.key,
-    required this.onLogout,
-  });
+  const SwipeLogoutButton({super.key, required this.onLogout});
 
   @override
   State<SwipeLogoutButton> createState() => _SwipeLogoutButtonState();
@@ -494,7 +550,6 @@ class _SwipeLogoutButtonState extends State<SwipeLogoutButton> {
         });
       },
       onHorizontalDragEnd: (_) async {
-
         if (drag > 0.85) {
           await widget.onLogout();
         }
@@ -517,7 +572,6 @@ class _SwipeLogoutButtonState extends State<SwipeLogoutButton> {
         child: Stack(
           alignment: Alignment.centerLeft,
           children: [
-
             const Center(
               child: Text(
                 "Swipe to Logout",
@@ -539,10 +593,7 @@ class _SwipeLogoutButtonState extends State<SwipeLogoutButton> {
                   gradient: AppColors.gradientV2,
                   borderRadius: BorderRadius.circular(35),
                 ),
-                child: const Icon(
-                  Icons.logout_rounded,
-                  color: Colors.white,
-                ),
+                child: const Icon(Icons.logout_rounded, color: Colors.white),
               ),
             ),
           ],
